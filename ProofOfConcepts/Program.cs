@@ -1,25 +1,18 @@
 ﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
-SayHey();
+using System.Runtime.ConstrainedExecution;
+using ProofOfConcepts;
 
-static void SayHey() {
-  Console.WriteLine("Saying Hey ...");
-}
+var htmlFile = "D:\\src\\Burgundy\\ProofOfConcepts\\index.html";
+var cssFileName = "215";
+var cssFile = $"D:\\src\\Burgundy\\ProofOfConcepts\\templates\\{cssFileName}.css";
 
-static void MergeHtmlAndCss(string htmlFilePath, string cssFilePath, string outputFilePath)
-{
-  // Read the contents of the HTML file
-  string html = File.ReadAllText(htmlFilePath);
+var timeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+var outputFileHTML = $"D:\\src\\Burgundy\\ProofOfConcepts\\templates\\outputfile_{cssFileName}_{timeStamp}.html";
 
-  // Read the contents of the CSS file
-  string css = File.ReadAllText(cssFilePath);
+var changeEngine = new ChangeEngine();
+changeEngine.MergeHtmlAndCss(htmlFile, cssFile, outputFileHTML);
 
-  // Find the closing head tag in the HTML
-  int headIndex = html.IndexOf("</head>", StringComparison.OrdinalIgnoreCase);
+// Output the PDF version
+var outputFilePDF = $"D:\\src\\Burgundy\\ProofOfConcepts\\templates\\outputfile_{cssFileName}_{timeStamp}.pdf";
+changeEngine.ConvertHtmlToPdf(outputFileHTML, outputFilePDF);
 
-  // Insert the CSS code before the closing head tag
-  html = html.Insert(headIndex, $"<style>{css}</style>");
-
-  // Write the modified HTML to a new file
-  File.WriteAllText(outputFilePath, html);
-}
